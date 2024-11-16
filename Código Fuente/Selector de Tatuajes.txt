@@ -1,0 +1,1332 @@
+{$CLEO .csi}
+
+03A4: script_name "Selector de Tatuajes"
+
+:JUGADOR
+0001: wait 0 ms
+00D6: if
+0256:   player $PLAYER_CHAR defined
+004D: jf @JUGADOR
+00D6: if and
+80DF:   not actor $PLAYER_ACTOR driving
+84AD:   not actor $PLAYER_ACTOR in_water
+8597:   not actor $PLAYER_ACTOR crouching
+8818:   not actor $PLAYER_ACTOR in_air
+8A0C:   not player $PLAYER_CHAR on_jetpack
+004D: jf @FINALIZAR_SCRIPT
+08F7: get_player $PLAYER_CHAR bodypart 0 textureCRC_to 12@ modelCRC_to 13@
+08F7: get_player $PLAYER_CHAR bodypart 17 textureCRC_to 14@ modelCRC_to 15@
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 17
+070D: rebuild_player $PLAYER_CHAR
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_PRINCIPAL
+0A69: create_shop_widget_menu "TATTO"
+0A6A: add_shop_widget_menu_item "LARMTP" price 0
+0A6A: add_shop_widget_menu_item "LARMLW" price 0
+0A6A: add_shop_widget_menu_item "RARMTP" price 0
+0A6A: add_shop_widget_menu_item "RARMLW" price 0
+0A6A: add_shop_widget_menu_item "BACK" price 0
+0A6A: add_shop_widget_menu_item "LCHEST" price 0
+0A6A: add_shop_widget_menu_item "RCHEST" price 0
+0A6A: add_shop_widget_menu_item "BELLY" price 0
+0A6A: add_shop_widget_menu_item "LBACK" price 0
+0A6A: add_shop_widget_menu_item "TATREM" price 0
+
+:WIDGET_ACEPTAR
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_SALIR
+0A5A: get_widget 156 value_to 0@ // float
+0092: 1@ = float 0@ to_integer
+00D6: if
+001B:   0 > 1@
+004D: jf @VAR_LARMTP
+0006: 1@ = 0
+
+:WIDGET_SALIR
+00D6: if
+0A52:   is_widget_released 55
+004D: jf @WIDGET_ACEPTAR
+0A6B: delete_widget 156
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @VOLVER_A_MOVER
+
+:VAR_LARMTP
+00D6: if
+0039:   1@ == 0
+004D: jf @VAR_LARMLW
+0001: wait 0 ms
+0002: jump @BRAZO_IZQUIERDO
+
+:VAR_LARMLW
+00D6: if
+0039:   1@ == 1
+004D: jf @VAR_RARMTP
+0001: wait 0 ms
+0002: jump @ANTEBRAZO_IZQUIERDO
+
+:VAR_RARMTP
+00D6: if
+0039:   1@ == 2
+004D: jf @VAR_RARMLW
+0001: wait 0 ms
+0002: jump @BRAZO_DERECHO
+
+:VAR_RARMLW
+00D6: if
+0039:   1@ == 3
+004D: jf @VAR_BACK
+0001: wait 0 ms
+0002: jump @ANTEBRAZO_DERECHO
+
+:VAR_BACK
+00D6: if
+0039:   1@ == 4
+004D: jf @VAR_LCHEST
+0001: wait 0 ms
+0002: jump @ESPALDA
+
+:VAR_LCHEST
+00D6: if
+0039:   1@ == 5
+004D: jf @VAR_RCHEST
+0001: wait 0 ms
+0002: jump @PECTORAL_IZQUIERDO
+
+:VAR_RCHEST
+00D6: if
+0039:   1@ == 6
+004D: jf @VAR_BELLY
+0001: wait 0 ms
+0002: jump @PECTORAL_DERECHO
+
+:VAR_BELLY
+00D6: if
+0039:   1@ == 7
+004D: jf @VAR_LBACK
+0001: wait 0 ms
+0002: jump @VIENTRE
+
+:VAR_LBACK
+00D6: if
+0039:   1@ == 8
+004D: jf @VAR_TATREM
+0001: wait 0 ms
+0002: jump @LUMBARES
+
+:VAR_TATREM
+00D6: if
+0039:   1@ == 9
+004D: jf @VAR_TATREM
+0001: wait 0 ms
+0002: jump @QUITAR_TATUAJE
+
+:BRAZO_IZQUIERDO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -1.430 0.355 0.310
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 1.430 0.0 0.310
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_BRAZO_IZQUIERDO
+0A69: create_shop_widget_menu "LARMTP"
+0A6A: add_shop_widget_menu_item "4WEED" price 0
+0A6A: add_shop_widget_menu_item "4RIP" price 0
+0A6A: add_shop_widget_menu_item "4SPIDER" price 0
+
+:WIDGET_ACEPTAR_BRAZO_IZQUIERDO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_BRAZO_IZQUIERDO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 2@ = float 0@ to_integer
+00D6: if
+001B:   0 > 2@
+004D: jf @VAR_TATUAJE_4WEED
+0006: 2@ = 0
+
+:WIDGET_CONFIRMAR_BRAZO_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_BRAZO_IZQUIERDO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_BRAZO_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_BRAZO_IZQUIERDO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_4WEED
+00D6: if
+0039:   2@ == 0
+004D: jf @VAR_TATUAJE_4RIP
+0001: wait 0 ms
+0002: jump @TATUAJE_4WEED
+
+:VAR_TATUAJE_4RIP
+00D6: if
+0039:   2@ == 1
+004D: jf @VAR_TATUAJE_4SPIDER
+0001: wait 0 ms
+0002: jump @TATUAJE_4RIP
+
+:VAR_TATUAJE_4SPIDER
+00D6: if
+0039:   2@ == 2
+004D: jf @VAR_TATUAJE_4SPIDER
+0001: wait 0 ms
+0002: jump @TATUAJE_4SPIDER
+
+:TATUAJE_4WEED
+087B: set_player $PLAYER_CHAR clothes_texture "4weed" model "4WEED" body_part 4
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_IZQUIERDO
+
+:TATUAJE_4RIP
+087B: set_player $PLAYER_CHAR clothes_texture "4rip" model "4RIP" body_part 4
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_IZQUIERDO
+
+:TATUAJE_4SPIDER
+087B: set_player $PLAYER_CHAR clothes_texture "4spider" model "4SPIDER" body_part 4
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_IZQUIERDO
+
+:ANTEBRAZO_IZQUIERDO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -1.430 0.355 0.310
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 1.430 0.0 0.310
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_ANTEBRAZO_IZQUIERDO
+0A69: create_shop_widget_menu "LARMLW"
+0A6A: add_shop_widget_menu_item "5GUN" price 0
+0A6A: add_shop_widget_menu_item "5CROSS" price 0
+0A6A: add_shop_widget_menu_item "5CROSS2" price 0
+0A6A: add_shop_widget_menu_item "5CROSS3" price 0
+
+:WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_ANTEBRAZO_IZQUIERDO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 3@ = float 0@ to_integer
+00D6: if
+001B:   0 > 3@
+004D: jf @VAR_TATUAJE_5GUN
+0006: 3@ = 0
+
+:WIDGET_CONFIRMAR_ANTEBRAZO_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_ANTEBRAZO_IZQUIERDO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_ANTEBRAZO_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_5GUN
+00D6: if
+0039:   3@ == 0
+004D: jf @VAR_TATUAJE_5CROSS
+0001: wait 0 ms
+0002: jump @TATUAJE_5GUN
+
+:VAR_TATUAJE_5CROSS
+00D6: if
+0039:   3@ == 1
+004D: jf @VAR_TATUAJE_5CROSS2
+0001: wait 0 ms
+0002: jump @TATUAJE_5CROSS
+
+:VAR_TATUAJE_5CROSS2
+00D6: if
+0039:   3@ == 2
+004D: jf @VAR_TATUAJE_5CROSS3
+0001: wait 0 ms
+0002: jump @TATUAJE_5CROSS2
+
+:VAR_TATUAJE_5CROSS3
+00D6: if
+0039:   3@ == 3
+004D: jf @VAR_TATUAJE_5CROSS3
+0001: wait 0 ms
+0002: jump @TATUAJE_5CROSS3
+
+:TATUAJE_5GUN
+087B: set_player $PLAYER_CHAR clothes_texture "5gun" model "5GUN" body_part 5
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+
+:TATUAJE_5CROSS
+087B: set_player $PLAYER_CHAR clothes_texture "5cross" model "5CROSS" body_part 5
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+
+:TATUAJE_5CROSS2
+087B: set_player $PLAYER_CHAR clothes_texture "5cross2" model "5CROSS2" body_part 5
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+
+:TATUAJE_5CROSS3
+087B: set_player $PLAYER_CHAR clothes_texture "5cross3" model "5CROSS3" body_part 5
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_IZQUIERDO
+
+:BRAZO_DERECHO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 1.430 -0.355 0.310
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -1.430 0.0 0.310
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_BRAZO_DERECHO
+0A69: create_shop_widget_menu "RARMTP"
+0A6A: add_shop_widget_menu_item "6AZTEC" price 0
+0A6A: add_shop_widget_menu_item "6CROWN" price 0
+0A6A: add_shop_widget_menu_item "6CLOWN" price 0
+0A6A: add_shop_widget_menu_item "6AFRICA" price 0
+
+:WIDGET_ACEPTAR_BRAZO_DERECHO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_BRAZO_DERECHO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 4@ = float 0@ to_integer
+00D6: if
+001B:   0 > 4@
+004D: jf @VAR_TATUAJE_6AZTEC
+0006: 4@ = 0
+
+:WIDGET_CONFIRMAR_BRAZO_DERECHO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_BRAZO_DERECHO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_BRAZO_DERECHO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_BRAZO_DERECHO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_6AZTEC
+00D6: if
+0039:   4@ == 0
+004D: jf @VAR_TATUAJE_6CROWN
+0001: wait 0 ms
+0002: jump @TATUAJE_6AZTEC
+
+:VAR_TATUAJE_6CROWN
+00D6: if
+0039:   4@ == 1
+004D: jf @VAR_TATUAJE_6CLOWN
+0001: wait 0 ms
+0002: jump @TATUAJE_6CROWN
+
+:VAR_TATUAJE_6CLOWN
+00D6: if
+0039:   4@ == 2
+004D: jf @VAR_TATUAJE_6AFRICA
+0001: wait 0 ms
+0002: jump @TATUAJE_6CLOWN
+
+:VAR_TATUAJE_6AFRICA
+00D6: if
+0039:   4@ == 3
+004D: jf @VAR_TATUAJE_6AFRICA
+0001: wait 0 ms
+0002: jump @TATUAJE_6AFRICA
+
+:TATUAJE_6AZTEC
+087B: set_player $PLAYER_CHAR clothes_texture "6aztec" model "6AZTEC" body_part 6
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_DERECHO
+
+:TATUAJE_6CROWN
+087B: set_player $PLAYER_CHAR clothes_texture "6crown" model "6CROWN" body_part 6
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_DERECHO
+
+:TATUAJE_6CLOWN
+087B: set_player $PLAYER_CHAR clothes_texture "6clown" model "6CLOWN" body_part 6
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_DERECHO
+
+:TATUAJE_6AFRICA
+087B: set_player $PLAYER_CHAR clothes_texture "6africa" model "6AFRICA" body_part 6
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_BRAZO_DERECHO
+
+:ANTEBRAZO_DERECHO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 1.430 -0.355 0.310
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -1.430 0.0 0.310
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_ANTEBRAZO_DERECHO
+0A69: create_shop_widget_menu "RARMLW"
+0A6A: add_shop_widget_menu_item "7CROSS" price 0
+0A6A: add_shop_widget_menu_item "7CROSS2" price 0
+0A6A: add_shop_widget_menu_item "7CROSS3" price 0
+0A6A: add_shop_widget_menu_item "7MARY" price 0
+
+:WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_ANTEBRAZO_DERECHO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 5@ = float 0@ to_integer
+00D6: if
+001B:   0 > 5@
+004D: jf @VAR_TATUAJE_7CROSS
+0006: 5@ = 0
+
+:WIDGET_CONFIRMAR_ANTEBRAZO_DERECHO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_ANTEBRAZO_DERECHO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_ANTEBRAZO_DERECHO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_7CROSS
+00D6: if
+0039:   5@ == 0
+004D: jf @VAR_TATUAJE_7CROSS2
+0001: wait 0 ms
+0002: jump @TATUAJE_7CROSS
+
+:VAR_TATUAJE_7CROSS2
+00D6: if
+0039:   5@ == 1
+004D: jf @VAR_TATUAJE_7CROSS3
+0001: wait 0 ms
+0002: jump @TATUAJE_7CROSS2
+
+:VAR_TATUAJE_7CROSS3
+00D6: if
+0039:   5@ == 2
+004D: jf @VAR_TATUAJE_7MARY
+0001: wait 0 ms
+0002: jump @TATUAJE_7CROSS3
+
+:VAR_TATUAJE_7MARY
+00D6: if
+0039:   5@ == 3
+004D: jf @VAR_TATUAJE_7MARY
+0001: wait 0 ms
+0002: jump @TATUAJE_7MARY
+
+:TATUAJE_7CROSS
+087B: set_player $PLAYER_CHAR clothes_texture "7cross" model "7CROSS" body_part 7
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+
+:TATUAJE_7CROSS2
+087B: set_player $PLAYER_CHAR clothes_texture "7cross2" model "7CROSS2" body_part 7
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+
+:TATUAJE_7CROSS3
+087B: set_player $PLAYER_CHAR clothes_texture "7cross3" model "7CROSS3" body_part 7
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+
+:TATUAJE_7MARY
+087B: set_player $PLAYER_CHAR clothes_texture "7mary" model "7MARY" body_part 7
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ANTEBRAZO_DERECHO
+
+:ESPALDA
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.215 -1.590 0.585
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -0.215 0.0 0.585
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_ESPALDA
+0A69: create_shop_widget_menu "BACK"
+0A6A: add_shop_widget_menu_item "8SA" price 0
+0A6A: add_shop_widget_menu_item "8SA2" price 0
+0A6A: add_shop_widget_menu_item "8SA3" price 0
+0A6A: add_shop_widget_menu_item "8WESTSD" price 0
+0A6A: add_shop_widget_menu_item "8SANTOS" price 0
+0A6A: add_shop_widget_menu_item "8POKER" price 0
+0A6A: add_shop_widget_menu_item "8GUN" price 0
+
+:WIDGET_ACEPTAR_ESPALDA
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_ESPALDA
+0A5A: get_widget 156 value_to 0@ // float
+0092: 6@ = float 0@ to_integer
+00D6: if
+001B:   0 > 6@
+004D: jf @VAR_TATUAJE_8SA
+0006: 6@ = 0
+
+:WIDGET_CONFIRMAR_ESPALDA
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_ESPALDA
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_ESPALDA
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_ESPALDA
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_8SA
+00D6: if
+0039:   6@ == 0
+004D: jf @VAR_TATUAJE_8SA2
+0001: wait 0 ms
+0002: jump @TATUAJE_8SA
+
+:VAR_TATUAJE_8SA2
+00D6: if
+0039:   6@ == 1
+004D: jf @VAR_TATUAJE_8SA3
+0001: wait 0 ms
+0002: jump @TATUAJE_8SA2
+
+:VAR_TATUAJE_8SA3
+00D6: if
+0039:   6@ == 2
+004D: jf @VAR_TATUAJE_8WESTSD
+0001: wait 0 ms
+0002: jump @TATUAJE_8SA3
+
+:VAR_TATUAJE_8WESTSD
+00D6: if
+0039:   6@ == 3
+004D: jf @VAR_TATUAJE_8SANTOS
+0001: wait 0 ms
+0002: jump @TATUAJE_8WESTSD
+
+:VAR_TATUAJE_8SANTOS
+00D6: if
+0039:   6@ == 4
+004D: jf @VAR_TATUAJE_8POKER
+0001: wait 0 ms
+0002: jump @TATUAJE_8SANTOS
+
+:VAR_TATUAJE_8POKER
+00D6: if
+0039:   6@ == 5
+004D: jf @VAR_TATUAJE_8GUN
+0001: wait 0 ms
+0002: jump @TATUAJE_8POKER
+
+:VAR_TATUAJE_8GUN
+00D6: if
+0039:   6@ == 6
+004D: jf @VAR_TATUAJE_8GUN
+0001: wait 0 ms
+0002: jump @TATUAJE_8GUN
+
+:TATUAJE_8SA
+087B: set_player $PLAYER_CHAR clothes_texture "8sa" model "8SA" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8SA2
+087B: set_player $PLAYER_CHAR clothes_texture "8sa2" model "8SA2" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8SA3
+087B: set_player $PLAYER_CHAR clothes_texture "8sa3" model "8SA3" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8WESTSD
+087B: set_player $PLAYER_CHAR clothes_texture "8westside" model "8WESTSD" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8SANTOS
+087B: set_player $PLAYER_CHAR clothes_texture "8santos" model "8SANTOS" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8POKER
+087B: set_player $PLAYER_CHAR clothes_texture "8poker" model "8POKER" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:TATUAJE_8GUN
+087B: set_player $PLAYER_CHAR clothes_texture "8gun" model "8GUN" body_part 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_ESPALDA
+
+:PECTORAL_IZQUIERDO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -0.215 1.590 0.585
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.215 0.0 0.585
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_PECTORAL_IZQUIERDO
+0A69: create_shop_widget_menu "LCHEST"
+0A6A: add_shop_widget_menu_item "9CROWN" price 0
+0A6A: add_shop_widget_menu_item "9GUN" price 0
+0A6A: add_shop_widget_menu_item "9GUN2" price 0
+0A6A: add_shop_widget_menu_item "9HOMBY" price 0
+0A6A: add_shop_widget_menu_item "9BULLT" price 0
+0A6A: add_shop_widget_menu_item "9RASTA" price 0
+
+:WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_PECTORAL_IZQUIERDO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 7@ = float 0@ to_integer
+00D6: if
+001B:   0 > 7@
+004D: jf @VAR_TATUAJE_9CROWN
+0006: 7@ = 0
+
+:WIDGET_CONFIRMAR_PECTORAL_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_PECTORAL_IZQUIERDO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_PECTORAL_IZQUIERDO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_9CROWN
+00D6: if
+0039:   7@ == 0
+004D: jf @VAR_TATUAJE_9GUN
+0001: wait 0 ms
+0002: jump @TATUAJE_9CROWN
+
+:VAR_TATUAJE_9GUN
+00D6: if
+0039:   7@ == 1
+004D: jf @VAR_TATUAJE_9GUN2
+0001: wait 0 ms
+0002: jump @TATUAJE_9GUN
+
+:VAR_TATUAJE_9GUN2
+00D6: if
+0039:   7@ == 2
+004D: jf @VAR_TATUAJE_9HOMBY
+0001: wait 0 ms
+0002: jump @TATUAJE_9GUN2
+
+:VAR_TATUAJE_9HOMBY
+00D6: if
+0039:   7@ == 3
+004D: jf @VAR_TATUAJE_9BULLT
+0001: wait 0 ms
+0002: jump @TATUAJE_9HOMBY
+
+:VAR_TATUAJE_9BULLT
+00D6: if
+0039:   7@ == 4
+004D: jf @VAR_TATUAJE_9RASTA
+0001: wait 0 ms
+0002: jump @TATUAJE_9BULLT
+
+:VAR_TATUAJE_9RASTA
+00D6: if
+0039:   7@ == 5
+004D: jf @VAR_TATUAJE_9RASTA
+0001: wait 0 ms
+0002: jump @TATUAJE_9RASTA
+
+:TATUAJE_9CROWN
+087B: set_player $PLAYER_CHAR clothes_texture "9crown" model "9CROWN" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:TATUAJE_9GUN
+087B: set_player $PLAYER_CHAR clothes_texture "9gun" model "9GUN" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:TATUAJE_9GUN2
+087B: set_player $PLAYER_CHAR clothes_texture "9gun2" model "9GUN2" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:TATUAJE_9HOMBY
+087B: set_player $PLAYER_CHAR clothes_texture "9homeboy" model "9HOMBY" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:TATUAJE_9BULLT
+087B: set_player $PLAYER_CHAR clothes_texture "9bullet" model "9BULLT" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:TATUAJE_9RASTA
+087B: set_player $PLAYER_CHAR clothes_texture "9rasta" model "9RASTA" body_part 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_IZQUIERDO
+
+:PECTORAL_DERECHO
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -0.215 1.590 0.585
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.215 0.0 0.585
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_PECTORAL_DERECHO
+0A69: create_shop_widget_menu "RCHEST"
+0A6A: add_shop_widget_menu_item "10LS" price 0
+0A6A: add_shop_widget_menu_item "10LS2" price 0
+0A6A: add_shop_widget_menu_item "10LS3" price 0
+0A6A: add_shop_widget_menu_item "10LS4" price 0
+0A6A: add_shop_widget_menu_item "10LS5" price 0
+0A6A: add_shop_widget_menu_item "10OG" price 0
+0A6A: add_shop_widget_menu_item "10WEED" price 0
+
+:WIDGET_ACEPTAR_PECTORAL_DERECHO
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_PECTORAL_DERECHO
+0A5A: get_widget 156 value_to 0@ // float
+0092: 8@ = float 0@ to_integer
+00D6: if
+001B:   0 > 8@
+004D: jf @VAR_TATUAJE_10LS
+0006: 8@ = 0
+
+:WIDGET_CONFIRMAR_PECTORAL_DERECHO
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_PECTORAL_DERECHO
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_PECTORAL_DERECHO
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_PECTORAL_DERECHO
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_10LS
+00D6: if
+0039:   8@ == 0
+004D: jf @VAR_TATUAJE_10LS2
+0001: wait 0 ms
+0002: jump @TATUAJE_10LS
+
+:VAR_TATUAJE_10LS2
+00D6: if
+0039:   8@ == 1
+004D: jf @VAR_TATUAJE_10LS3
+0001: wait 0 ms
+0002: jump @TATUAJE_10LS2
+
+:VAR_TATUAJE_10LS3
+00D6: if
+0039:   8@ == 2
+004D: jf @VAR_TATUAJE_10LS4
+0001: wait 0 ms
+0002: jump @TATUAJE_10LS3
+
+:VAR_TATUAJE_10LS4
+00D6: if
+0039:   8@ == 3
+004D: jf @VAR_TATUAJE_10LS5
+0001: wait 0 ms
+0002: jump @TATUAJE_10LS4
+
+:VAR_TATUAJE_10LS5
+00D6: if
+0039:   8@ == 4
+004D: jf @VAR_TATUAJE_10OG
+0001: wait 0 ms
+0002: jump @TATUAJE_10LS5
+
+:VAR_TATUAJE_10OG
+00D6: if
+0039:   8@ == 5
+004D: jf @VAR_TATUAJE_10WEED
+0001: wait 0 ms
+0002: jump @TATUAJE_10OG
+
+:VAR_TATUAJE_10WEED
+00D6: if
+0039:   8@ == 6
+004D: jf @VAR_TATUAJE_10WEED
+0001: wait 0 ms
+0002: jump @TATUAJE_10WEED
+
+:TATUAJE_10LS
+087B: set_player $PLAYER_CHAR clothes_texture "10ls" model "10LS" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10LS2
+087B: set_player $PLAYER_CHAR clothes_texture "10ls2" model "10LS2" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10LS3
+087B: set_player $PLAYER_CHAR clothes_texture "10ls3" model "10LS3" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10LS4
+087B: set_player $PLAYER_CHAR clothes_texture "10ls4" model "10LS4" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10LS5
+087B: set_player $PLAYER_CHAR clothes_texture "10ls5" model "10LS5" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10OG
+087B: set_player $PLAYER_CHAR clothes_texture "10og" model "10OG" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:TATUAJE_10WEED
+087B: set_player $PLAYER_CHAR clothes_texture "10weed" model "10WEED" body_part 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_PECTORAL_DERECHO
+
+:VIENTRE
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -0.215 1.590 0.585
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.215 0.0 0.585
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_VIENTRE
+0A69: create_shop_widget_menu "BELLY"
+0A6A: add_shop_widget_menu_item "11GROVE" price 0
+0A6A: add_shop_widget_menu_item "11GROV2" price 0
+0A6A: add_shop_widget_menu_item "11GROV3" price 0
+0A6A: add_shop_widget_menu_item "11DICE" price 0
+0A6A: add_shop_widget_menu_item "11DICE2" price 0
+0A6A: add_shop_widget_menu_item "11JAIL" price 0
+0A6A: add_shop_widget_menu_item "11GGIFT" price 0
+
+:WIDGET_ACEPTAR_VIENTRE
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_VIENTRE
+0A5A: get_widget 156 value_to 0@ // float
+0092: 9@ = float 0@ to_integer
+00D6: if
+001B:   0 > 9@
+004D: jf @VAR_TATUAJE_11GROVE
+0006: 9@ = 0
+
+:WIDGET_CONFIRMAR_VIENTRE
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_VIENTRE
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_VIENTRE
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_VIENTRE
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_11GROVE
+00D6: if
+0039:   9@ == 0
+004D: jf @VAR_TATUAJE_11GROV2
+0001: wait 0 ms
+0002: jump @TATUAJE_11GROVE
+
+:VAR_TATUAJE_11GROV2
+00D6: if
+0039:   9@ == 1
+004D: jf @VAR_TATUAJE_11GROV3
+0001: wait 0 ms
+0002: jump @TATUAJE_11GROV2
+
+:VAR_TATUAJE_11GROV3
+00D6: if
+0039:   9@ == 2
+004D: jf @VAR_TATUAJE_11DICE
+0001: wait 0 ms
+0002: jump @TATUAJE_11GROV3
+
+:VAR_TATUAJE_11DICE
+00D6: if
+0039:   9@ == 3
+004D: jf @VAR_TATUAJE_11DICE2
+0001: wait 0 ms
+0002: jump @TATUAJE_11DICE
+
+:VAR_TATUAJE_11DICE2
+00D6: if
+0039:   9@ == 4
+004D: jf @VAR_TATUAJE_11JAIL
+0001: wait 0 ms
+0002: jump @TATUAJE_11DICE2
+
+:VAR_TATUAJE_11JAIL
+00D6: if
+0039:   9@ == 5
+004D: jf @VAR_TATUAJE_11GGIFT
+0001: wait 0 ms
+0002: jump @TATUAJE_11JAIL
+
+:VAR_TATUAJE_11GGIFT
+00D6: if
+0039:   9@ == 6
+004D: jf @VAR_TATUAJE_11GGIFT
+0001: wait 0 ms
+0002: jump @TATUAJE_11GGIFT
+
+:TATUAJE_11GROVE
+087B: set_player $PLAYER_CHAR clothes_texture "11grove" model "11GROVE" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11GROV2
+087B: set_player $PLAYER_CHAR clothes_texture "11grove2" model "11GROV2" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11GROV3
+087B: set_player $PLAYER_CHAR clothes_texture "11grove3" model "11GROV3" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11DICE
+087B: set_player $PLAYER_CHAR clothes_texture "11dice" model "11DICE" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11DICE2
+087B: set_player $PLAYER_CHAR clothes_texture "11dice2" model "11DICE2" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11JAIL
+087B: set_player $PLAYER_CHAR clothes_texture "11jail" model "11JAIL" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:TATUAJE_11GGIFT
+087B: set_player $PLAYER_CHAR clothes_texture "11godsgift" model "11GGIFT" body_part 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_VIENTRE
+
+:LUMBARES
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.215 -1.590 0.585
+015F: set_camera_position 1@ 2@ 3@ rotation 0.0 0.0 0.0
+04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset -0.215 0.0 0.585
+0160: set_camera_point_at 1@ 2@ 3@ switchstyle 2
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_LUMBARES
+0A69: create_shop_widget_menu "LBACK"
+0A6A: add_shop_widget_menu_item "12ANGEL" price 0
+0A6A: add_shop_widget_menu_item "12MAYBR" price 0
+0A6A: add_shop_widget_menu_item "12DAGER" price 0
+0A6A: add_shop_widget_menu_item "12BNDIT" price 0
+0A6A: add_shop_widget_menu_item "12CROSS" price 0
+0A6A: add_shop_widget_menu_item "12MYFAC" price 0
+
+:WIDGET_ACEPTAR_LUMBARES
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_LUMBARES
+0A5A: get_widget 156 value_to 0@ // float
+0092: 10@ = float 0@ to_integer
+00D6: if
+001B:   0 > 10@
+004D: jf @VAR_TATUAJE_12ANGEL
+0006: 10@ = 0
+
+:WIDGET_CONFIRMAR_LUMBARES
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_LUMBARES
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_LUMBARES
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_LUMBARES
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_TATUAJE_12ANGEL
+00D6: if
+0039:   10@ == 0
+004D: jf @VAR_TATUAJE_12MAYBR
+0001: wait 0 ms
+0002: jump @TATUAJE_12ANGEL
+
+:VAR_TATUAJE_12MAYBR
+00D6: if
+0039:   10@ == 1
+004D: jf @VAR_TATUAJE_12DAGER
+0001: wait 0 ms
+0002: jump @TATUAJE_12MAYBR
+
+:VAR_TATUAJE_12DAGER
+00D6: if
+0039:   10@ == 2
+004D: jf @VAR_TATUAJE_12BNDIT
+0001: wait 0 ms
+0002: jump @TATUAJE_12DAGER
+
+:VAR_TATUAJE_12BNDIT
+00D6: if
+0039:   10@ == 3
+004D: jf @VAR_TATUAJE_12CROSS
+0001: wait 0 ms
+0002: jump @TATUAJE_12BNDIT
+
+:VAR_TATUAJE_12CROSS
+00D6: if
+0039:   10@ == 4
+004D: jf @VAR_TATUAJE_12MYFAC
+0001: wait 0 ms
+0002: jump @TATUAJE_12CROSS
+
+:VAR_TATUAJE_12MYFAC
+00D6: if
+0039:   10@ == 5
+004D: jf @VAR_TATUAJE_12MYFAC
+0001: wait 0 ms
+0002: jump @TATUAJE_12MYFAC
+
+:TATUAJE_12ANGEL
+087B: set_player $PLAYER_CHAR clothes_texture "12angels" model "12ANGEL" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:TATUAJE_12MAYBR
+087B: set_player $PLAYER_CHAR clothes_texture "12mayabird" model "12MAYBR" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:TATUAJE_12DAGER
+087B: set_player $PLAYER_CHAR clothes_texture "12dagger" model "12DAGER" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:TATUAJE_12BNDIT
+087B: set_player $PLAYER_CHAR clothes_texture "12bandit" model "12BNDIT" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:TATUAJE_12CROSS
+087B: set_player $PLAYER_CHAR clothes_texture "12cross7" model "12CROSS" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:TATUAJE_12MYFAC
+087B: set_player $PLAYER_CHAR clothes_texture "12mayaface" model "12MYFAC" body_part 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_LUMBARES
+
+:QUITAR_TATUAJE
+01B4: set_player $PLAYER_CHAR can_move 0
+
+:MENU_QUITAR_TATUAJE
+0A69: create_shop_widget_menu "TATREM"
+0A6A: add_shop_widget_menu_item "LARMTP" price 0
+0A6A: add_shop_widget_menu_item "LARMLW" price 0
+0A6A: add_shop_widget_menu_item "RARMTP" price 0
+0A6A: add_shop_widget_menu_item "RARMLW" price 0
+0A6A: add_shop_widget_menu_item "BACK" price 0
+0A6A: add_shop_widget_menu_item "LCHEST" price 0
+0A6A: add_shop_widget_menu_item "RCHEST" price 0
+0A6A: add_shop_widget_menu_item "BELLY" price 0
+0A6A: add_shop_widget_menu_item "LBACK" price 0
+
+:WIDGET_ACEPTAR_QUITAR_TATUAJE
+0001: wait 0 ms
+00D6: if
+0A52:   is_widget_released 54
+004D: jf @WIDGET_CONFIRMAR_QUITAR_TATUAJE
+0A5A: get_widget 156 value_to 0@ // float
+0092: 11@ = float 0@ to_integer
+00D6: if
+001B:   0 > 11@
+004D: jf @VAR_QUITAR_LARMTP
+0006: 11@ = 0
+
+:WIDGET_CONFIRMAR_QUITAR_TATUAJE
+00D6: if
+0A52:   is_widget_released 47
+004D: jf @WIDGET_REGRESAR_QUITAR_TATUAJE
+0A6B: delete_widget 156
+0793: save_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:WIDGET_REGRESAR_QUITAR_TATUAJE
+00D6: if
+0A52:   is_widget_released 56
+004D: jf @WIDGET_ACEPTAR_QUITAR_TATUAJE
+0A6B: delete_widget 156
+0794: restore_player_clothes
+0784: set_player $PLAYER_CHAR textureCRC 12@ modelCRC 13@ bodypart 0
+0784: set_player $PLAYER_CHAR textureCRC 14@ modelCRC 15@ bodypart 17
+015A: restore_camera
+02EB: restore_camera_with_jumpcut
+0002: jump @JUGADOR
+
+:VAR_QUITAR_LARMTP
+00D6: if
+0039:   11@ == 0
+004D: jf @VAR_QUITAR_LARMLW
+0001: wait 0 ms
+0002: jump @QUITAR_LARMTP
+
+:VAR_QUITAR_LARMLW
+00D6: if
+0039:   11@ == 1
+004D: jf @VAR_QUITAR_RARMTP
+0001: wait 0 ms
+0002: jump @QUITAR_LARMLW
+
+:VAR_QUITAR_RARMTP
+00D6: if
+0039:   11@ == 2
+004D: jf @VAR_QUITAR_RARMLW
+0001: wait 0 ms
+0002: jump @QUITAR_RARMTP
+
+:VAR_QUITAR_RARMLW
+00D6: if
+0039:   11@ == 3
+004D: jf @VAR_QUITAR_BACK
+0001: wait 0 ms
+0002: jump @QUITAR_RARMLW
+
+:VAR_QUITAR_BACK
+00D6: if
+0039:   11@ == 4
+004D: jf @VAR_QUITAR_LCHEST
+0001: wait 0 ms
+0002: jump @QUITAR_BACK
+
+:VAR_QUITAR_LCHEST
+00D6: if
+0039:   11@ == 5
+004D: jf @VAR_QUITAR_RCHEST
+0001: wait 0 ms
+0002: jump @QUITAR_LCHEST
+
+:VAR_QUITAR_RCHEST
+00D6: if
+0039:   11@ == 6
+004D: jf @VAR_QUITAR_BELLY
+0001: wait 0 ms
+0002: jump @QUITAR_RCHEST
+
+:VAR_QUITAR_BELLY
+00D6: if
+0039:   11@ == 7
+004D: jf @VAR_QUITAR_LBACK
+0001: wait 0 ms
+0002: jump @QUITAR_BELLY
+
+:VAR_QUITAR_LBACK
+00D6: if
+0039:   11@ == 8
+004D: jf @VAR_QUITAR_LBACK
+0001: wait 0 ms
+0002: jump @QUITAR_LBACK
+
+:QUITAR_LARMTP
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 4
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_LARMLW
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 5
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_RARMTP
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 6
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_RARMLW
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 7
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_BACK
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 8
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_LCHEST
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 9
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_RCHEST
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 10
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_BELLY
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 11
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:QUITAR_LBACK
+0784: set_player $PLAYER_CHAR textureCRC 0 modelCRC 0 bodypart 12
+070D: rebuild_player $PLAYER_CHAR
+0002: jump @WIDGET_ACEPTAR_QUITAR_TATUAJE
+
+:VOLVER_A_MOVER
+0001: wait 0 ms
+01B4: set_player $PLAYER_CHAR can_move 1
+0002: jump @FINALIZAR_SCRIPT
+
+:FINALIZAR_SCRIPT
+004E: terminate_this_script
